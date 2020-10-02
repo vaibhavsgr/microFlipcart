@@ -1,0 +1,94 @@
+
+<html>
+    <head>
+      {% load static %}
+      {% load bootstrap4 %}
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Welcome to Flipcart </title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="container text-center">
+          <h1>Checkout</h1>
+      </div>
+    </header>
+    <div class="col my-4">
+      <h2> Your Cart Items </h2>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart_items %}
+                <tr>
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.product.description }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.product.price }}</td>
+                </tr>
+              {% endfor %}
+          <tr>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td>{{ total }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    <div class="col my-1">
+          <h2>Enter Address & Other Details:</h2>
+          <form method="post" action="/thankyou/">{% csrf_token %}
+            <input type="hidden" name="itemsJson" id='itemsJson'>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputname">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" id="city" name="city">
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputZip">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone">
+            </div>
+            <p id="demo"></p>
+            <input type="hidden" name="status" id="status", value="Accepted">
+            <button type="submit" class="btn btn-primary">Place Order</button>
+          </form>
+    </div>
+
+
+      <script>
+      for (const items of Object.entries(cart_items)){
+        document.getElementById('demo').innerHTML = 'vaibhav';
+      }
+      </script>
+
+
+    <footer>
+        <div class="container text-center">
+            <h2>Flipcart Backend </h2>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    {% load static %}
+    {% load bootstrap4 %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Welcome to Flipcart </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+  <body>
+    <header>
+      <div class="container text-center">
+        <h3>Shopping Cart</h3>
+      </div>
+    </header>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th> Product Name </th>
+            <th> Price </th>
+            <th> Description </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+              <tr>
+                <td> {{item.product.name}} </td>
+                <td> {{item.product.price}} </td>
+                <td> {{item.product.description}} </td>
+                <td> <form class="form-inline" method="post" action="{% url 'adjust_cart' item.id %}">
+                        {% csrf_token %}
+                          <div class="form-group">
+                              <label for="exampleInputAmount" class="sr-only">New Qty</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon">Qty</div>
+                                  <input name="quantity" type="number" min="0" max="999" class="form-control">
+                                  <div class="input-group-addon">{{ item.quantity }}</div>
+                              </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                      </form>
+                </td>
+              </tr>
+           {% endfor %}
+    </table>
+    <br>
+    <br>
+    <div class="container text-center">
+      <div class="row row-color">
+          <div class="checkout-padding">
+              <h3>Total: Rs {{ total }}</h3>
+              <input type="hidden" name="itemsJson" id='itemsJson'>
+              <a href="{% url 'checkout' %}" class="btn btn-success" role="button">Checkout</a>
+          </div>
+      </div>
+    </div>
+    
+    <script>
+      $('#itemsJson').val(JSON.stringify({{cart_items}}));
+    </script>
+      <footer>
+          <div class="container text-center">
+              <p>Flipcart Backend </p>
+          </div>
+      </footer>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+{%extends 'base.html' %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  You're an administrator
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+
+
+<a class="btn btn-primary" href="{% url 'product_details'%}">View Products</a>
+
+
+{% endblock %}

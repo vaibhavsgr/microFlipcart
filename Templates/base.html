@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Welcome to Flipcart </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+          {% block content %} {% endblock %}
+      </div>
+    </header>
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"> Products </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout_view' %}"><i class="fa fa-sign-out"></i> Log Out</a></li>
+            {%  else %}
+                <li><a href="{% url 'login_view' %}"><i class="fa fa-sign-in"></i> Log In</a></li>
+                <li><a href="{% url 'register' %}"><i class="fa fa-sign-in"></i> Register</a></li>
+            {% endif %}
+            <li>
+                <a href="{% url 'view_cart' %}">
+                    <i class="fa fa-shopping-cart"></i> Cart
+                    {% if product_count > 0 %}
+                    <label class="badge badge-warning">{{ product_count }}</label>
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th> Product Name </th>
+        		<th> Price </th>
+        		<th> Color </th>
+        		<th> Size </th>
+        		<th> Description </th>
+            <th> Available Qty </th>
+            <th> Order </th>
+          </tr>
+        </thead>
+        <tbody>
+        	{% for product in Products %}
+              <tr>
+                <td> {{product.name}} </td>
+                <td> {{product.price}} </td>
+            		<td> {{product.color}} </td>
+            		<td> {{product.size}} </td>
+            		<td> {{product.description}} </td>
+                <td> {{product.qty}} </td>
+                <td> <form method="post" action="{% url 'add_to_cart' product.id  %}">
+                          {% csrf_token %}
+                          <div class="input-group">
+                            <input name="quantity" type="number" min="1" max="999" class="form-control form-size" placeholder="Quantity">
+                            <span class="input-group-btn">
+                              <button class="btn btn-success" type="submit">Add</button>
+                            </span>
+                          </div>
+                    </form>
+                </td>
+              </tr>
+        	 {% endfor %}
+    </table>
+<br>
+<br>
+      </div>
+         <div class="row row-color">
+          <div class="checkout-padding">
+            <h3>Total: Rs {{ total }}</h3>
+            <a href="{% url 'checkout' %}" class="btn btn-success" role="button">Checkout</a>
+          </div>
+        </div>
+      </td>
+    	</tbody>
+
+
+    <footer>
+        <div class="container text-center">
+            <p>Flipcart Backend </p>
+        </div>
+    </footer>
+  </body>
+</html>

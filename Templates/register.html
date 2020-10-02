@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Welcome to Flipcart </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+  </head>
+  {% load static %}
+
+  {% block content %}
+
+<body>
+  <style type="text/css">
+    .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    }
+
+    .form-signin .form-control {
+      position: relative;
+      box-sizing: border-box;
+      height: auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+    .form-signin input[type="email"] {
+      margin-bottom: 10px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="tel"] {
+      margin-bottom: 10px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+      margin-bottom: -1px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .h3{
+      text-align: center;
+    }
+
+  </style>
+
+
+  <form class="form-signin" method="post">{% csrf_token %}
+    <h1 class="h3 mb-3 font-weight-normal">Register an account</h1>
+
+    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+
+    <input type="tel" name="phone" id="inputPhone" class="form-control" placeholder="Phone" required>
+
+    <input type="password" name="password1" id="inputPassword1" class="form-control" placeholder="Password" required>
+
+    <input type="password" name="password2" id="inputPassword2" class="form-control" placeholder="Confirm password" required>
+
+    {% for field in registration_form %}
+        <p>
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </p>
+    {% endfor %}
+    {% if registration_form.non_field_errors %}
+      <div style="color: red">
+        <p>{{registration_form.non_field_errors}}</p>
+      </div>
+
+    {% endif %}
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+  </form>
+
+  <footer>
+      <div class="container text-center">
+          <p>Flipcart Backend </p>
+      </div>
+  </footer>
+</body>
+{% endblock content %}
