@@ -23,10 +23,7 @@ Only products which are “In stock” should be allowed to order.
 View past orders
 
 
-3.Sales Agent:
-Login using username and password.
-View orders for all customers
-Process an Order:
-Update order status [“Accepted”, “Delivered”, “Cancelled”]
-On order accept:
-An SMS is sent to the customer (Hint: Make it asynchronous.)
+3. Sales Agent: 
+Login using username and password. View orders for all customers. 
+Process an Order: Update order status [“Accepted”, “Delivered”, “Cancelled”]
+On order accept: An SMS is sent to the customer (Hint: Make it asynchronous.)
