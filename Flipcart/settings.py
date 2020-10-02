@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.redirects',
     'django.contrib.sites',
     'bootstrap4',
-    'crispy_forms',
     'phone_field',
     'usermgmt',
     'cart',
@@ -76,6 +75,11 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    #'usrmgmt.phone_backend.EmailOrUsernameModelBackend',
+)
 
 AUTH_USER_MODEL = 'usermgmt.Account'
 

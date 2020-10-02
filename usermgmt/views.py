@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
@@ -6,12 +8,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-
+from .phone_backend import PhoneBackend
 from .forms import ProductForm, RegistrationForm, AccountAuthenticationForm, CustomerAccountAuthenticationForm
 from .models import Product
 
 
-# Create your views here.
 def index(request):
     return render(request, "index.html")
 
@@ -55,7 +56,6 @@ def login_view(request):
                 if user.is_superuser or user.is_staff:
                     return redirect('admin/')
                 else:
-                    #return render(request, "home.html")
                     return redirect('home')
             else:
                 messages.error(request, "Invalid username or password.")
@@ -67,27 +67,37 @@ def login_view(request):
 
 
 def customer_login_view(request):
+    context = {}
+    user = request.user
+    if user.is_authenticated:
+        return redirect("home")
+
     if request.method == 'POST':
-        form = CustomerAccountAuthenticationForm(request=request, data=request.POST)
+        form = CustomerAccountAuthenticationForm(request.POST)
         if form.is_valid():
-            #username = form.cleaned_data.get('username')
             phone = form.cleaned_data.get('phone')
-            otp = form.cleaned_data.get('otp')
-            user = authenticate(phone=phone, otp=otp)
+            otp   = form.cleaned_data.get('otp')
+            print (phone, otp)
+            user = PhoneBackend.authenticate(phone=phone, input_OTP=input_OTP, actual_OTP=actual_OTP)
+            print (user)
             if user is not None:
-                login(request, user)
+                login(request, user, backend=usermgmt.phone_backend.PhoneBackend)
                 return render(request, "home.html")
 
     form = CustomerAccountAuthenticationForm()
-    return render(request = request,
-                    template_name = "login.html",
-                    context={"form":form})
+    actual_OTP = generate_otp()
+    return render(request, "customer_login.html", {"form":form})
+
+
+def generate_otp():
+    otp = random.randint(111111,999999)
+    print (otp)
+    return otp
 
 
 def logout_view(request):
     logout(request)
     return render(request, "home.html")
-    #return HttpResponseRedirect(reverse('home_view'))
 
 
 def home_view(request, *args, **kwargs):

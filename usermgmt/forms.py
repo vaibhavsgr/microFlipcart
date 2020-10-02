@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashFiel
 from django.contrib.auth import authenticate
 from phonenumber_field.formfields import PhoneNumberField
 
+from .phone_backend import PhoneBackend
 from .models import Product, Account
 
 
@@ -28,29 +29,28 @@ class AccountAuthenticationForm(forms.ModelForm):
             model = Account
             fields = ['username', 'password']
 
-
         def clean(self):
             if self.is_valid():
                 username = self.cleaned_data['username']
-                #phone    = self.cleaned_data['phone']
                 password = self.cleaned_data['password']
                 if not authenticate(username=username, password=password):
                     raise forms.ValidationError("Invalid login")
 
 
 class CustomerAccountAuthenticationForm(forms.ModelForm):
-        #password = forms.CharField(label='Password', widget=forms.PasswordInput)
+        otp     = forms.IntegerField(label='OTP', widget=forms.NumberInput)
+        phone   = PhoneNumberField()
+
         class Meta:
             model = Account
-            fields = ['phone', 'password']
+            fields = ['phone', 'otp']
 
         def clean(self):
             if self.is_valid():
-                #username = self.cleaned_data['username']
-                phone    = self.cleaned_data['phone']
-                #otp = self.cleaned_data['password']
-                password = self.cleaned_data('password')
-                if not authenticate(phone=phone, password=password):
+                phone = self.cleaned_data['phone']
+                otp = self.cleaned_data['otp']
+                print (phone, otp)
+                if not PhoneBackend.authenticate(phone=phone, input_OTP=otp):
                     raise forms.ValidationError("Invalid login")
 
 
