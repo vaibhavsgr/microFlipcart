@@ -1,20 +1,19 @@
-import datetime, uuid, random
-
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import backends, get_user_model
 from django.db.models import Q
 
+from .models import Account
 
-class PhoneBackend(ModelBackend):
 
-    def authenticate(phone=None, input_OTP=None, actual_OTP=None):
-        if phone is None:
+class PhoneBackend(backends.ModelBackend):
+
+    def authenticate(username=None, input_OTP=None, actual_OTP=None, backend='PhoneBackend'):
+        if username is None:
             return
-        user = get_user_model()
-        print (user)
+        usermodel = get_user_model()
         try:
-            user = usermodel.objects.get(Q(phone__iexact=phone))
+            user = Account.objects.get(phone=username)
+            #print ("Phone backend found {} ".format(user))
             if (actual_OTP==None):
                 return user
             else:

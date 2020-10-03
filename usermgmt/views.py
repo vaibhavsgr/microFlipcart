@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .phone_backend import PhoneBackend
 from .forms import ProductForm, RegistrationForm, AccountAuthenticationForm, CustomerAccountAuthenticationForm
 from .models import Product
+from cart.models import Order
 
 
 def index(request):
@@ -46,6 +47,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_superuser or user.is_staff:
+                    print (user)
                     login(request, user)
                     return redirect('admin/')
                 else:
@@ -70,12 +72,13 @@ def customer_login_view(request):
         if form.is_valid():
             phone = form.cleaned_data.get('phone')
             otp   = form.cleaned_data.get('otp')
-            print (phone, otp)
-            user = PhoneBackend.authenticate(phone=phone, input_OTP=input_OTP, actual_OTP=actual_OTP)
-            print (user)
+            user = PhoneBackend.authenticate(username=phone, input_OTP=otp, backend='PhoneBackend')
+            #print ("Customer login view after authenticate {} {} {} ".format(user, phone, otp))
             if user is not None:
-                login(request, user, backend=usermgmt.phone_backend.PhoneBackend)
-                return render(request, "home.html")
+                login(request, user, backend='usermgmt.phone_backend.PhoneBackend')
+                return redirect('home/')
+            else:
+                messages.error(request, "Invalid Phone")
 
     form = CustomerAccountAuthenticationForm()
     actual_OTP = generate_otp()
@@ -95,18 +98,15 @@ def logout_view(request):
 
 def home_view(request, *args, **kwargs):
     print (request.user)
-    #return HttpResponse("<H1> Hello World, to the landing page of DeHaat</H1>")
     allProducts = Product.objects.all()
     return render(request, "home.html", {'Products':allProducts})
-    #return render(request, "home.html", {})
 
 
 @login_required
-def view_orders(request):
+def past_orders_view(request):
     print (request.user)
-    allOrders = Orders.objects.all()
+    allOrders = Order.objects.all()
     return
-
 
 @login_required
 def product_create_view(request):
@@ -121,7 +121,6 @@ def product_create_view(request):
 
 
 def product_detail_view(request):
-    #obj = Product.objects.get(id=1)
     print (request.user)
     allProducts = Product.objects.all()
     return render(request, "product_detail.html", {'Products':allProducts})

@@ -35,9 +35,10 @@
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout_view' %}"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                <li><a href="{% url 'orders_view' %}"><i class="fa fa-sign-in"></i> Orders</a></li>
             {%  else %}
                 <li><a href="{% url 'login_view' %}"><i class="fa fa-sign-in"></i> Log In</a></li>
-                <li><a href="{% url 'customer_login_view' %}"><i class="fa fa-sign-in"></i> Customer Log In</a></li>
+                <li><a href="{% url 'customer_login_view' %}"><i class="fa fa-customer-sign-in"></i> Customer Log In</a></li>
                 <li><a href="{% url 'register' %}"><i class="fa fa-sign-in"></i> Register</a></li>
             {% endif %}
             <li>

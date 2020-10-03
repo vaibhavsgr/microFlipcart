@@ -14,7 +14,6 @@ class ProductForm(forms.ModelForm):
 
 
 class RegistrationForm(UserCreationForm):
-    #email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address.')
         phone = PhoneNumberField()
 
         class Meta:
@@ -22,7 +21,6 @@ class RegistrationForm(UserCreationForm):
             fields = ['username', 'phone', 'password1', 'password2']
 
         def save(self, commit=True):
-            # Save the provided password in hashed format
             user = super(RegistrationForm, self).save(commit=False)
             user.username = self.cleaned_data['username']
             user.phone = self.cleaned_data['phone']
@@ -59,8 +57,8 @@ class CustomerAccountAuthenticationForm(forms.ModelForm):
             if self.is_valid():
                 phone = self.cleaned_data['phone']
                 otp = self.cleaned_data['otp']
-                print (phone, otp)
-                if not PhoneBackend.authenticate(phone=phone, input_OTP=otp):
+                #print ("Forms view {} {}".format(phone,otp))
+                if not PhoneBackend.authenticate(username=phone, input_OTP=otp, actual_OTP=otp):
                     raise forms.ValidationError("Invalid login")
 
 

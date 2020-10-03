@@ -78,8 +78,9 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    #'usrmgmt.phone_backend.EmailOrUsernameModelBackend',
+    'usermgmt.phone_backend.PhoneBackend',
 )
+
 
 AUTH_USER_MODEL = 'usermgmt.Account'
 
