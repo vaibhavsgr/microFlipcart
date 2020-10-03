@@ -19,20 +19,13 @@ def index(request):
 
 def registration_view(request):
     context = {}
-    if request.POST:
+    if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            phone = form.cleaned_data.get('phone')
-            raw_password = form.cleaned_data.get('password1')
-            account = authenticate(username=username, password=raw_password)
-            if account:
-                login(request, account)
-                return redirect(request, 'home.html', {})
+            return render(request, "home.html")
         else:
             context['registration_form'] = form
-
     else:
         form = RegistrationForm()
         context['registration_form'] = form
@@ -52,11 +45,11 @@ def login_view(request):
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             if user:
-                login(request, user)
                 if user.is_superuser or user.is_staff:
+                    login(request, user)
                     return redirect('admin/')
                 else:
-                    return redirect('home')
+                    return redirect('customer_login/')
             else:
                 messages.error(request, "Invalid username or password.")
                 return render(request, 'login.html', context={"form":form})

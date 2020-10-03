@@ -1,2 +1,3 @@
 .idea
-__pycache__
+cart/__pycache__/
+Flipcart/__pycache__/
