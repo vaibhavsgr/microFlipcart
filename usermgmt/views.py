@@ -27,6 +27,7 @@ def registration_view(request):
             return render(request, "home.html")
         else:
             context['registration_form'] = form
+            return render(request, 'register.html', context)            
     else:
         form = RegistrationForm()
         context['registration_form'] = form
@@ -85,12 +86,6 @@ def customer_login_view(request):
     return render(request, "customer_login.html", {"form":form})
 
 
-def generate_otp():
-    otp = random.randint(111111,999999)
-    print (otp)
-    return otp
-
-
 def logout_view(request):
     logout(request)
     return render(request, "home.html")
@@ -105,8 +100,9 @@ def home_view(request, *args, **kwargs):
 @login_required
 def past_orders_view(request):
     print (request.user)
-    allOrders = Order.objects.all()
-    return
+    #allOrders = Order.objects.all()
+    allOrders = Order.objects.filter(full_name=request.user)
+    return render(request, "orders.html", {'Orders':allOrders})
 
 @login_required
 def product_create_view(request):
@@ -124,3 +120,9 @@ def product_detail_view(request):
     print (request.user)
     allProducts = Product.objects.all()
     return render(request, "product_detail.html", {'Products':allProducts})
+
+
+def generate_otp():
+    otp = random.randint(111111,999999)
+    print (otp)
+    return otp
