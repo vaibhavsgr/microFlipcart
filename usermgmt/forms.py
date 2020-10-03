@@ -21,7 +21,7 @@ class RegistrationForm(UserCreationForm):
             fields = ['username', 'phone', 'password1', 'password2']
 
         def save(self, commit=True):
-            user = super(RegistrationForm, self).save(commit=False)
+            user = super().save(commit=False)
             user.username = self.cleaned_data['username']
             user.phone = self.cleaned_data['phone']
             user.set_password(self.cleaned_data["password1"])
