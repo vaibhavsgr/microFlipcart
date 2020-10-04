@@ -2,6 +2,7 @@
 <html>
   <head>
     {% load static %}
+    {% load priceHistory %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -67,6 +68,11 @@
         		<th> Description </th>
             <th> Available Qty </th>
             <th> Order </th>
+            {% if user.is_authenticated %}
+              {% if not user.is_staff %}
+            <th> Last Purchased At </th>
+              {% endif %}
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -88,6 +94,9 @@
                           </div>
                     </form>
                 </td>
+                {% if user.is_authenticated %}
+                <td>{{ OldOrders|order_price_history:product.name }} </td>
+                {% endif %}
               </tr>
         	 {% endfor %}
     </table>

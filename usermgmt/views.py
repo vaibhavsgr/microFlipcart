@@ -100,8 +100,15 @@ def logout_view(request):
 def home_view(request, *args, **kwargs):
     print (request.user)
     allProducts = Product.objects.all()
-    return render(request, "home.html", {'Products':allProducts})
-
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return render(request, "home.html", {'Products':allProducts})
+        else:
+            oldOrders = Order.objects.filter(full_name=request.user)
+            productsDict = __string_to_dict(oldOrders)
+            return render(request, "home.html", {'Products':allProducts, 'OldOrders':productsDict})
+    else:
+        return render(request, "home.html", {'Products':allProducts})
 
 @login_required
 def salesman_view(request):
