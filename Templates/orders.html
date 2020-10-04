@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
   </head>
 
   <body>
@@ -21,7 +19,11 @@
         <h2> Your orders </h2>
       </div>
     </header>
-
+    <style type="text/css">
+    	.floatLeft { width: 50%; float: left; }
+    	.floatRight {width: 50%; float: right; }
+    	.container { overflow: hidden; }
+    	</style>
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -34,7 +36,6 @@
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
                 <li><a href="{% url 'logout_view' %}"><i class="fa fa-sign-out"></i> Log Out</a></li>
-
                 {% if not user.is_staff %}
                   <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
                   <li>
@@ -48,26 +49,43 @@
                 {% endif %}
         </ul>
     </div>
-    <table class="table table-striped">
-    	<thead>
-    	  <tr>
-    		<th> Ordered Date </th>
-    		<th> Status </th>
-    		<th> Product Name </th>
-    			<th> Price </th>
-    	  </tr>
-    	</thead>
-    	{{Orders}}
-    	<tbody>
-    	  {% for order in Orders %}
+    <div class="container">
+      <div class="floatLeft">
+      <table class="table table-striped">
+      	<thead>
+      	  <tr>
+      		<th> Ordered Date </th>
+      		<th> Status </th>
+      	  </tr>
+      	</thead>
+      	<tbody>
+          {% for order in Orders %}
           <tr>
-      		  <td> {{order.date}} </td>
-      		  <td> {{order.status}} </td>
-      		  <td> {{ order.items_json.}} </td>
-      		  <td> {{ order.value }} </td>
-    		  </tr>
-    	  {% endfor %}
-      </table>
+        	<td> {{order.date}} </td>
+        	<td> {{order.status}} </td>
+          </tr>
+      	  {% endfor %}
+        </table>
+      </div>
+      <div class="floatRight">
+      <table class="table table-striped">
+      	<thead>
+      	  <tr>
+      		<th> Product Name </th>
+      		<th> Price </th>
+      	  </tr>
+      	</thead>
+      	<tbody>
+          {% for k,v in Products.items %}
+          <tr>
+          <td> {{ k }} </td>
+          <td> {{ v }} </td>
+          </tr>
+          {% endfor %}
+      		</tr>
+        </table>
+      </div>
+      </div>
 <br><br>
     <footer>
         <div class="container text-center">

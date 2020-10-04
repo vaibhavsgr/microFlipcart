@@ -1,4 +1,4 @@
-import random
+import random, re
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -88,7 +88,7 @@ def customer_login_view(request):
                 return render(request, 'login.html', context={"form":form})
 
     form = CustomerAccountAuthenticationForm()
-    actual_OTP = generate_otp()
+    actual_OTP = __generate_otp()
     return render(request, "customer_login.html", {"form":form})
 
 
@@ -107,14 +107,16 @@ def home_view(request, *args, **kwargs):
 def salesman_view(request):
     print (request.user)
     allOrders = Order.objects.all()
-    return render(request, "orders.html", {'Orders':allOrders})
+    productsDict = __string_to_dict(allOrders)
+    return render(request, "orders.html", {'Orders':allOrders, 'Products':productsDict})
 
 
 @login_required
 def past_orders_view(request):
     print (request.user)
     allOrders = Order.objects.filter(full_name=request.user)
-    return render(request, "orders.html", {'Orders':allOrders})
+    productsDict = __string_to_dict(allOrders)
+    return render(request, "orders.html", {'Orders':allOrders, 'Products':productsDict})
 
 
 @login_required
@@ -135,7 +137,15 @@ def product_detail_view(request):
     return render(request, "product_detail.html", {'Products':allProducts})
 
 
-def generate_otp():
+def __generate_otp():
     otp = random.randint(111111,999999)
     print (otp)
     return otp
+
+def __string_to_dict(stringOfDict):
+    productsDict = {}
+    for o in stringOfDict:
+        ans =  re.findall('\{.*?\}', str(o))
+    for i in ans:
+        productsDict = eval(i)
+    return productsDict
