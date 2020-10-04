@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
 from .models import Product, Account
 from .forms import UserAdminChangeForm, UserAdminCreationForm
@@ -10,7 +11,7 @@ class AccountAdmin(UserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
     list_display = ('username', 'phone', 'date_joined', 'last_login', 'is_admin','is_staff')
-    list_filter = ('is_admin',)
+    list_filter = ('is_admin', 'is_staff')
 
     readonly_fields=('date_joined', 'last_login')
 	#fieldsets = ((None,
@@ -25,3 +26,4 @@ class AccountAdmin(UserAdmin):
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Product)
+admin.site.unregister(Group)

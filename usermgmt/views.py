@@ -27,7 +27,7 @@ def registration_view(request):
             return render(request, "home.html")
         else:
             context['registration_form'] = form
-            return render(request, 'register.html', context)            
+            return render(request, 'register.html', context)
     else:
         form = RegistrationForm()
         context['registration_form'] = form
@@ -47,10 +47,12 @@ def login_view(request):
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             if user:
-                if user.is_superuser or user.is_staff:
-                    print (user)
+                if user.is_superuser:
                     login(request, user)
                     return redirect('admin/')
+                elif user.is_staff:
+                    login(request, user)
+                    return redirect('salesman_view/')
                 else:
                     return redirect('customer_login/')
             else:
@@ -98,11 +100,18 @@ def home_view(request, *args, **kwargs):
 
 
 @login_required
+def salesman_view(request):
+    print (request.user)
+    allOrders = Order.objects.all()
+    return render(request, "orders.html", {'Orders':allOrders})
+
+
+@login_required
 def past_orders_view(request):
     print (request.user)
-    #allOrders = Order.objects.all()
     allOrders = Order.objects.filter(full_name=request.user)
     return render(request, "orders.html", {'Orders':allOrders})
+
 
 @login_required
 def product_create_view(request):

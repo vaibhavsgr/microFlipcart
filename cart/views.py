@@ -22,18 +22,17 @@ def thankyou(request):
         status = request.POST.get('status', '')
 
         cart = request.session.get('cart', {})
-        items = {}
+        items_json = {}
         for id, quantity in cart.items():
             product = get_object_or_404(Product, pk=id)
-            items[product.name] = product.price
+            items_json[product.name] = str(product.price)
 
-
-        order = Order(items_json= items, full_name=name, town_or_city=city, phone_number=phone, status=status)
+        order = Order(items_json=items_json, full_name=name, town_or_city=city,
+                    phone_number=phone, status=status, date=timezone.now())
         order.save()
         request.session['cart'] = {}
         id = order.order_id
         return render(request, 'thankyou.html', {'id':id,})
-    #return render(request, "thankyou.html")
 
 
 def add_to_cart(request, id):
@@ -42,7 +41,6 @@ def add_to_cart(request, id):
     cart[id] = cart.get(id, quantity)
     request.session['cart'] = cart
     return redirect(reverse('home'))
-    #return render(request, "cart.html")
 
 
 def adjust_cart(request, id):
@@ -76,11 +74,3 @@ def checkout(request):
             #        quantity = quantity
             #        )
             #    order_line_item.save()
-
-        #messages.error(request, "You have successfully paid")
-        #request.session['cart'] = {}
-    #else:
-        #order_form = OrderForm()
-
-    #return redirect(reverse('index'))
-    #return render(request, "checkout.html", {'order_form': order_form})

@@ -19,7 +19,7 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 
-from usermgmt.views import home_view, product_detail_view, product_create_view, past_orders_view
+from usermgmt.views import home_view, product_detail_view, product_create_view, past_orders_view, salesman_view
 from usermgmt.views import registration_view, login_view, customer_login_view, logout_view
 from cart.views import view_cart, add_to_cart, adjust_cart, checkout, thankyou
 
@@ -42,7 +42,9 @@ urlpatterns = [
 
     path('create/', product_create_view, name="create"),
     path('product_details/', product_detail_view, name="product_details"),
+
     path('orders_view', past_orders_view, name='orders_view'),
+    path('accounts/login/salesman_view/', salesman_view, name='salesman_view'),
     path('view_cart/', view_cart, name='view_cart'),
     url(r'^add/(?P<id>\d+)', add_to_cart, name='add_to_cart'),
     url(r'^adjust/(?P<id>\d+)', adjust_cart, name='adjust_cart'),
