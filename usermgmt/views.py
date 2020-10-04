@@ -111,11 +111,15 @@ def home_view(request, *args, **kwargs):
         return render(request, "home.html", {'Products':allProducts})
 
 @login_required
-def salesman_view(request):
+def salesman_view(request, id=None):
     print (request.user)
-    allOrders = Order.objects.all()
-    productsDict = __string_to_dict(allOrders)
-    return render(request, "orders.html", {'Orders':allOrders, 'Products':productsDict})
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        print (status, id)
+    else:
+        allOrders = Order.objects.all()
+        productsDict = __string_to_dict(allOrders)
+        return render(request, "orders.html", {'Orders':allOrders, 'Products':productsDict})
 
 
 @login_required
@@ -151,8 +155,7 @@ def __generate_otp():
 
 def __string_to_dict(stringOfDict):
     productsDict = {}
-    for o in stringOfDict:
-        ans =  re.findall('\{.*?\}', str(o))
-    for i in ans:
-        productsDict = eval(i)
+    listofdicts =  re.findall('\{.*?\}', str(stringOfDict))
+    for items in listofdicts:
+        productsDict.update(eval(items))
     return productsDict
