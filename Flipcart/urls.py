@@ -31,20 +31,17 @@ urlpatterns = [
 
     path('', home_view, name='home'),
     path('home/', home_view, name='home'),
-    path('customer_login/home/', home_view, name='home'),
     path('register/', registration_view, name="register"),
 
-    path('login/', login_view, name='login_view'),
     path('accounts/login/', login_view, name='login_view'),
-    path('logout/', logout_view, name='logout_view'),
-    path('login/customer_login/', customer_login_view, name='customer_login_view'),
     path('customer_login/', customer_login_view, name="customer_login_view"),
+    path('logout/', logout_view, name='logout_view'),
 
     path('create/', product_create_view, name="create"),
     path('product_details/', product_detail_view, name="product_details"),
-
     path('orders_view', past_orders_view, name='orders_view'),
-    path('accounts/login/salesman_view/', salesman_view, name='salesman_view'),
+    path('salesman_view/', salesman_view, name='salesman_view'),
+
     path('view_cart/', view_cart, name='view_cart'),
     url(r'^add/(?P<id>\d+)', add_to_cart, name='add_to_cart'),
     url(r'^adjust/(?P<id>\d+)', adjust_cart, name='adjust_cart'),

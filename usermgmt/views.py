@@ -52,9 +52,9 @@ def login_view(request):
                     return redirect('admin/')
                 elif user.is_staff:
                     login(request, user)
-                    return redirect('salesman_view/')
+                    return redirect('/salesman_view/')
                 else:
-                    return redirect('customer_login/')
+                    return redirect('/customer_login/')
             else:
                 messages.error(request, "Invalid username or password.")
                 return render(request, 'login.html', context={"form":form})
@@ -77,11 +77,15 @@ def customer_login_view(request):
             otp   = form.cleaned_data.get('otp')
             user = PhoneBackend.authenticate(username=phone, input_OTP=otp, backend='PhoneBackend')
             #print ("Customer login view after authenticate {} {} {} ".format(user, phone, otp))
-            if user is not None:
-                login(request, user, backend='usermgmt.phone_backend.PhoneBackend')
-                return redirect('home/')
+            if user:
+                if user.is_superuser or user.is_staff:
+                    return redirect('/accounts/login/')
+                else:
+                    login(request, user, backend='usermgmt.phone_backend.PhoneBackend')
+                    return redirect('/home/')
             else:
                 messages.error(request, "Invalid Phone")
+                return render(request, 'login.html', context={"form":form})
 
     form = CustomerAccountAuthenticationForm()
     actual_OTP = generate_otp()
