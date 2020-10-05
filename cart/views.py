@@ -20,11 +20,14 @@ def thankyou(request):
         city = request.POST.get('city', '')
         phone = request.POST.get('phone', '')
         status = request.POST.get('status', '')
-
         cart = request.session.get('cart', {})
+
         items_json = {}
         for id, quantity in cart.items():
             product = get_object_or_404(Product, pk=id)
+            updated_qty = product.qty-quantity
+            product.qty = updated_qty
+            product.save()
             items_json[product.name] = str(product.price)
 
         order = Order(items_json=items_json, full_name=name, town_or_city=city,
