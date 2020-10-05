@@ -115,7 +115,9 @@ def salesman_view(request, id=None):
     print (request.user)
     if request.method == 'POST':
         status = request.POST.get('status')
-        print (status, id)
+        orders = request.session.get('orders')
+        print (status, orders)
+        return redirect('/salesman_view/')
     else:
         allOrders = Order.objects.all()
         productsDict = __string_to_dict(allOrders)
