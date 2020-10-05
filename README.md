@@ -80,4 +80,10 @@ Customers
 1. Each product when entered into stock, would include more than just name in the title/name of the product, as seen on most of the ecommerce website.
 Something like this - *Apple iPhone 11 (64GB) - Black*.  This helps in formatting the view of *price of older ordered products*. Although, can be explicitly extended to support more filtering criteria
 
-2. Register link works and creates customer-type users. So to convert a customer to a *is_admin*, *is_staff* user, login using admin and update the user permissions there. 
+2. Register link works and creates customer-type users. So to convert a customer to a *is_admin*, *is_staff* user, login using admin and update the user permissions there.
+
+3. Customer logins using phone and otp combination - phone number must be of the format +919876543210, also the OTP would be displayed in the console terminal in which the server is running.
+
+
+
+Thanks.
