@@ -83,7 +83,11 @@
             		<td> {{product.color}} </td>
             		<td> {{product.size}} </td>
             		<td> {{product.description}} </td>
+                {% if product.qty %}
                 <td> {{product.qty}} </td>
+                {% else %}
+                <td> N/A </td>
+                {% endif %}
                 <td> <form method="post" action="{% url 'add_to_cart' product.id  %}">
                           {% csrf_token %}
                           <div class="input-group">

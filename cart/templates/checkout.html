@@ -54,7 +54,8 @@
     <div class="col my-1">
           <h2>Enter Address & Other Details:</h2>
           <form method="post" action="/thankyou/">{% csrf_token %}
-            <input type="hidden" name="itemsJson" id='itemsJson'>
+
+            <input type="hidden" name="orderedItems" id='orderedItems'>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputname">Name</label>
@@ -72,19 +73,13 @@
                 <input type="tel" class="form-control" id="phone" name="phone">
             </div>
             <p id="demo"></p>
-            <input type="hidden" name="status" id="status", value="Accepted">
+            <input type="hidden" name="status" id="status", value="Ordered">
             <button type="submit" class="btn btn-primary">Place Order</button>
           </form>
     </div>
-
-
-      <script>
-      for (const items of Object.entries(cart_items)){
-        document.getElementById('demo').innerHTML = 'vaibhav';
-      }
-      </script>
-
-
+    <script>
+      $('#orderedItems').val(JSON.stringify({{cart_items}}));
+    </script>
     <footer>
         <div class="container text-center">
             <h2>Flipcart Backend </h2>
