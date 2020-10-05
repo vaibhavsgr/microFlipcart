@@ -5,21 +5,21 @@ A micro version of the ecommerce site, with the following supports:
 Types of user and their roles/functions/privileges:
 
 
-1. Admin:
+1. ###### Admin:
 
-	Login using username and password.
+	> Login using username and password.
 	
-	Create users for roles (customer, sales-agent)
+	> Create users for roles (customer, sales-agent)
 	
-	Create new products and update existing products. 
+	> Create new products and update existing products. 
 	
-	Update product info
+	> Update product info
 	
-	Update current price
+	> Update current price
 	
-	Update current stock level
+	> Update current stock level
 	
-	Update product status - currently eligible for selling
+	> Update product status - currently eligible for selling
 
 
 
